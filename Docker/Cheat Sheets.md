@@ -15,3 +15,20 @@
 	docker tag myimage:1.0 myrepo/myimage:2.0
 ### Push an image to a registry
 	docker push myrepo/myimage:2.0
+	
+# Run
+
+### Run a container from the Alpine version 3.9 image, name the running container “web” and expose port 5000 externally, mapped to port 80  inside the container.
+	docker container run --name web -p5000:80 alpine:3.9
+### Stop a running container through SIGTERM 
+	docker container stop web
+### Stop a running container through SIGKILL
+	docker container kill web
+### List the networks
+	docker network ls
+### List the running containers (add --all to include stopped containers)
+	docker container ls
+### Delete all running and stopped containers
+	docker container rm -f $(docker ps -aq)
+### Print the last 100 lines of a container’s logs
+docker container logs --tail 100 web
