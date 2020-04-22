@@ -1,8 +1,11 @@
-Build
-Build an image from the Dockerfile in the
-current directory and tag the image
+# Build
 
-docker build -t myimage:1.0 .
+* Build an image from the Dockerfile in the current directory and tag the image
+	* docker build -t myimage:1.0 .
+
+
+
+
 
 List all images that are locally stored with
 the Docker Engine
