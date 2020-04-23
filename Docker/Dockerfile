@@ -1,17 +1,23 @@
 # base image
 FROM ubuntu:latest
 
+# install python3, pip3 et vim
+RUN apt-get update && apt-get -y install python3.6 python3-pip vim git
+
 # un espace de travail appelé workspace
+WORKDIR /Docker
+ADD . /workspace
 WORKDIR /workspace
 
-# install python3, pip3 et vim
-RUN sudo apt-get install python3.6 && sudo apt-get install python3-pip && sudo apt-get install vim
-
-# install 
-RUN pip-3.3 install -r requirements.txt
-
-# un set up des credentials git pour l'utilisateur du container
+# Clone git repo
 RUN git clone https://github.com/Dagga78/Cours_BigData.git /workspace/Cours_BigData
 
-# une exposition du port 8000 
-EXPOSE 8000
+# install
+RUN pip3 freeze > requirements.txt && \
+	pip3 install -r requirements.txt && \
+	pip3 install jupyter
+
+# une exposition du port 8000
+EXPOSE 8888
+
+CMD ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root"]
