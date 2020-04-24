@@ -1,25 +1,29 @@
-from flask import Flask, render_template, url_for, json, jsonify, request
+from flask import Flask, url_for, json
 import os
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 app = Flask(__name__)
 
-with open('../data/books.json') as json_file:
-    data = json.load(json_file)
+df = pd.read_json("../data/books.json")
 
 @app.route('/')
 def index():
-    return "Hello world !"
+    return "Hello world!"
 
 @app.route('/books')
 def books():
-	data = json.load(open(json_url))
-	return jsonify(data)
+    return df.to_json(orient='records', lines=True)
 
-@app.route('/books/<isbn>')
-def book(isbn):
-	for row in data:
-		for attribute, value in row.items():
-			if(attribute == "isbn" and value==isbn):
-				return row
+@app.route('/book', defaults={'isbn': None})
+@app.route('/book/<isbn>')
+def select_one(isbn):
+    if isbn is None:
+        abort(404)
+    else:
+        return df[df['isbn'] == isbn].to_json(orient='records', lines=True)
 
 if __name__ == "__main__":
     app.run()
